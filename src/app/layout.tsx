@@ -6,7 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Twilio Messaging App",
+  title: "MessageFlow",
   description: "Modern SMS & RCS messaging platform for business",
 };
 
