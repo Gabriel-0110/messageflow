@@ -270,7 +270,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 For questions about this project or collaboration opportunities:
 
 - 🐛 **Issues**: [GitHub Issues](https://github.com/Gabriel-0110/messageflow/issues)
-- 💼 **LinkedIn**: [Your LinkedIn Profile](https://www.linkedin.com/in/chiappagabe/)
+- 💼 **LinkedIn**: [Gabriel Chiappa LinkedIn Profile](https://www.linkedin.com/in/chiappagabe/)
 - 📧 **Email**: gabriel.chiappa@outlook.com
 
 ## Acknowledgments
