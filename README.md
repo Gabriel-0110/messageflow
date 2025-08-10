@@ -77,7 +77,7 @@ This project demonstrates **full-stack development capabilities** with modern te
 ### 1. Clone & Install
 ```bash
 git clone https://github.com/Gabriel-0110/messageflow.git
-d messageflow
+cd messageflow
 npm install
 ```
 

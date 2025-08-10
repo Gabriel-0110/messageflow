@@ -1,0 +1,180 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  role      String   @default("user")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  contacts  Contact[]
+  templates MessageTemplate[]
+  campaigns Campaign[]
+  messages  Message[]
+
+  @@map("users")
+}
+
+model Contact {
+  id           String            @id @default(cuid())
+  firstName    String
+  lastName     String
+  phoneNumber  String
+  email        String?
+  tags         String            @default("") // JSON string array
+  customFields String            @default("{}") // JSON object
+  userId       String
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  // Relations
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages     Message[]
+  campaignContacts CampaignContact[]
+
+  @@map("contacts")
+  @@index([userId])
+  @@index([phoneNumber])
+}
+
+model MessageTemplate {
+  id          String          @id @default(cuid())
+  name        String
+  category    String
+  type        String
+  content     String
+  variables   String          @default("[]") // JSON string array
+  description String?
+  isActive    Boolean         @default(true)
+  userId      String
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  // Relations
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages  Message[]
+  campaigns Campaign[]
+
+  @@map("message_templates")
+  @@index([userId])
+  @@index([category])
+  @@index([type])
+}
+
+model RCSTemplate {
+  id          String   @id @default(cuid())
+  name        String
+  contentSid  String   @unique
+  description String?
+  variables   String   @default("[]") // JSON string array
+  previewData String?  @default("{}") // JSON object
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("rcs_templates")
+}
+
+model Message {
+  id           String        @id @default(cuid())
+  recipientId  String
+  templateId   String?
+  type         String
+  content      String
+  status       String        @default("pending")
+  twilioSid    String?       @unique
+  scheduledAt  DateTime?
+  sentAt       DateTime?
+  deliveredAt  DateTime?
+  readAt       DateTime?
+  errorMessage String?
+  userId       String
+  campaignId   String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  // Relations
+  recipient Contact         @relation(fields: [recipientId], references: [id], onDelete: Cascade)
+  template  MessageTemplate? @relation(fields: [templateId], references: [id], onDelete: SetNull)
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  campaign  Campaign?       @relation(fields: [campaignId], references: [id], onDelete: SetNull)
+
+  @@map("messages")
+  @@index([userId])
+  @@index([recipientId])
+  @@index([status])
+  @@index([createdAt])
+  @@index([twilioSid])
+}
+
+model Campaign {
+  id               String            @id @default(cuid())
+  name             String
+  description      String?
+  templateId       String
+  scheduledAt      DateTime?
+  status           String            @default("draft")
+  totalRecipients  Int               @default(0)
+  sentCount        Int               @default(0)
+  deliveredCount   Int               @default(0)
+  failedCount      Int               @default(0)
+  readCount        Int               @default(0)
+  userId           String
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  // Relations
+  template         MessageTemplate   @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contacts         CampaignContact[]
+  messages         Message[]
+
+  @@map("campaigns")
+  @@index([userId])
+  @@index([status])
+}
+
+model CampaignContact {
+  id         String   @id @default(cuid())
+  campaignId String
+  contactId  String
+  createdAt  DateTime @default(now())
+
+  // Relations
+  campaign Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  contact  Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  @@unique([campaignId, contactId])
+  @@map("campaign_contacts")
+}
+
+model Analytics {
+  id               String   @id @default(cuid())
+  date             DateTime @unique
+  totalMessages    Int      @default(0)
+  sentMessages     Int      @default(0)
+  deliveredMessages Int     @default(0)
+  failedMessages   Int      @default(0)
+  readMessages     Int      @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@map("analytics")
+  @@index([date])
+}
+
+// Note: SQLite doesn't support enums, so we use strings with constraints in the application layer
+// Possible values:
+// Role: "user", "admin"
+// MessageType: "sms", "rcs" 
+// MessageStatus: "pending", "sent", "delivered", "failed", "read"
+// CampaignStatus: "draft", "scheduled", "running", "completed", "paused", "failed"
