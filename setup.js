@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
-const path = require('path');
-const { execSync } = require('child_process');
+import fs from 'fs';
+import path from 'path';
+import { execSync } from 'child_process';
 
 console.log('🚀 Setting up MessageFlow App...\n');
 
@@ -26,7 +26,7 @@ if (!fs.existsSync(path.join(__dirname, 'node_modules'))) {
     execSync('npm install', { stdio: 'inherit', cwd: __dirname });
     console.log('✅ Dependencies installed\n');
   } catch (error) {
-    console.error('❌ Failed to install dependencies');
+    console.error('❌ Failed to install dependencies:', error.message);
     process.exit(1);
   }
 }
@@ -37,7 +37,7 @@ try {
   execSync('npx prisma generate', { stdio: 'inherit', cwd: __dirname });
   execSync('npx prisma db push', { stdio: 'inherit', cwd: __dirname });
   console.log('✅ Database configured\n');
-} catch (error) {
+} catch {
   console.log('⚠️  Database setup had issues - you may need to configure manually\n');
 }
 

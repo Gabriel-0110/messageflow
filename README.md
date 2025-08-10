@@ -7,6 +7,7 @@ A beautiful, modern web application for business messaging that serves as a comp
 ## 🎯 Purpose & Vision
 
 MessageFlow was created as a **modern alternative to RCS messaging** platforms, providing businesses with:
+
 - **Enhanced messaging capabilities** beyond traditional SMS limitations
 - **Rich interactive features** without requiring carrier RCS support
 - **Complete control** over messaging infrastructure and data
@@ -18,6 +19,7 @@ Perfect for **portfolio demonstrations** and **production business use**.
 ## Features
 
 ### ✨ Core Features
+
 - **SMS & RCS Messaging** - Send both traditional SMS and rich RCS messages
 - **Contact Management** - Organize contacts with tags, groups, and custom fields
 - **Message Templates** - Create reusable templates with dynamic variables
@@ -26,6 +28,7 @@ Perfect for **portfolio demonstrations** and **production business use**.
 - **Webhook Integration** - Real-time status updates and delivery receipts
 
 ### 🎨 Modern UI/UX
+
 - **Responsive Design** - Works perfectly on desktop, tablet, and mobile
 - **Dark/Light Theme** - Toggle between themes with smooth transitions
 - **Beautiful Components** - Built with Radix UI and Tailwind CSS
@@ -33,6 +36,7 @@ Perfect for **portfolio demonstrations** and **production business use**.
 - **Mobile-First** - Optimized for mobile messaging workflows
 
 ### 🚀 Advanced Capabilities
+
 - **RCS Rich Features** - Interactive buttons, carousels, and media
 - **Template Variables** - Dynamic personalization with {{variable}} syntax
 - **Bulk Messaging** - Send to thousands with queue management
@@ -45,14 +49,16 @@ Perfect for **portfolio demonstrations** and **production business use**.
 This project showcases modern web development practices and serves as a comprehensive portfolio piece. Current implementation status:
 
 ### ✅ Completed
+
 - **Modern UI/UX Design** - Fully responsive with dark/light themes
 - **Component Architecture** - Professional React components with TypeScript
-- **Database Schema** - Complete Prisma schema with all necessary models  
+- **Database Schema** - Complete Prisma schema with all necessary models
 - **Twilio Integration** - Basic SMS sending functionality
 - **API Structure** - RESTful endpoints for core features
 - **Professional Layout** - Dashboard, sidebar navigation, and responsive design
 
-### 🔄 In Progress  
+### 🔄 In Progress
+
 - **Authentication System** - User registration and login
 - **Database Integration** - Connecting frontend to Prisma backend
 - **Contact Management** - CRUD operations with database persistence
@@ -60,6 +66,7 @@ This project showcases modern web development practices and serves as a comprehe
 - **Campaign Features** - Bulk messaging and scheduling
 
 ### 📋 Planned Features
+
 - **RCS Rich Messaging** - Interactive buttons, carousels, and media
 - **Advanced Analytics** - Real-time reporting and engagement metrics
 - **Webhook Integration** - Message status updates and delivery tracking
@@ -70,11 +77,13 @@ This project demonstrates **full-stack development capabilities** with modern te
 ## Quick Start
 
 ### Prerequisites
+
 - Node.js 18+ and npm/pnpm
 - Twilio Account with SMS/RCS enabled
 - SQLite (included) or PostgreSQL for production
 
 ### 1. Clone & Install
+
 ```bash
 git clone https://github.com/Gabriel-0110/messageflow.git
 cd messageflow
@@ -82,6 +91,7 @@ npm install
 ```
 
 ### 2. Environment Setup
+
 Copy the example environment file and configure your credentials:
 
 ```bash
@@ -111,6 +121,7 @@ APP_URL=http://localhost:3000
 > ⚠️ **Important**: Never commit your `.env.local` file with real credentials
 
 ### 3. Database Setup
+
 ```bash
 npx prisma generate
 npx prisma db push
@@ -118,6 +129,7 @@ npx prisma db seed  # Optional: seed with sample data
 ```
 
 ### 4. Run Development Server
+
 ```bash
 npm run dev
 ```
@@ -127,17 +139,21 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ## Twilio Setup
 
 ### 1. Create Twilio Account
+
 1. Sign up at [Twilio Console](https://console.twilio.com/)
 2. Get your Account SID and Auth Token
 3. Purchase a phone number with SMS/RCS capabilities
 
 ### 2. Configure Webhooks
+
 Set up webhooks in Twilio Console:
+
 - **Webhook URL**: `https://yourdomain.com/api/twilio/webhook`
 - **HTTP Method**: POST
 - **Events**: Message Status, Incoming Messages
 
 ### 3. RCS Setup (Optional)
+
 1. Apply for RCS access in Twilio Console
 2. Create RCS Content Templates
 3. Configure rich messaging features
@@ -171,17 +187,20 @@ src/
 ## API Endpoints
 
 ### Twilio Integration
+
 - `POST /api/twilio/send-sms` - Send SMS message
 - `POST /api/twilio/send-rcs` - Send RCS message
 - `POST /api/twilio/webhook` - Handle delivery status webhooks
 
 ### Contact Management
+
 - `GET /api/contacts` - List contacts
 - `POST /api/contacts` - Create contact
 - `PUT /api/contacts/:id` - Update contact
 - `DELETE /api/contacts/:id` - Delete contact
 
 ### Template Management
+
 - `GET /api/templates` - List templates
 - `POST /api/templates` - Create template
 - `PUT /api/templates/:id` - Update template
@@ -201,17 +220,20 @@ Built with Prisma ORM supporting SQLite (development) and PostgreSQL (production
 ## Deployment
 
 ### Vercel (Recommended)
+
 1. Connect your GitHub repository
 2. Configure environment variables
 3. Deploy automatically on push
 
 ### Docker
+
 ```bash
 docker build -t messageflow .
 docker run -p 3000:3000 messageflow
 ```
 
 ### Manual Deployment
+
 1. Build the application: `npm run build`
 2. Start production server: `npm run start`
 3. Configure reverse proxy (nginx/Apache)
@@ -219,6 +241,7 @@ docker run -p 3000:3000 messageflow
 ## Configuration
 
 ### Twilio Features
+
 - **SMS Capabilities**: Standard text messaging
 - **RCS Features**: Rich cards, buttons, carousels
 - **Media Messages**: Images, videos, documents
@@ -226,6 +249,7 @@ docker run -p 3000:3000 messageflow
 - **Two-way Messaging**: Handle incoming messages
 
 ### Customization
+
 - **Branding**: Update colors, logos, and styling
 - **Templates**: Create custom message templates
 - **Workflows**: Add custom business logic
@@ -234,6 +258,7 @@ docker run -p 3000:3000 messageflow
 ## 🛠 Tech Stack
 
 **Frontend:**
+
 - **Next.js 15** - React framework with App Router
 - **TypeScript** - Type-safe development
 - **Tailwind CSS** - Utility-first CSS framework
@@ -241,12 +266,14 @@ docker run -p 3000:3000 messageflow
 - **Lucide React** - Beautiful icons
 
 **Backend:**
+
 - **Next.js API Routes** - Serverless API endpoints
 - **Prisma ORM** - Type-safe database access
 - **SQLite/PostgreSQL** - Database options
 - **Twilio SDK** - Messaging infrastructure
 
 **Development:**
+
 - **ESLint & Prettier** - Code formatting
 - **Husky** - Git hooks
 - **TypeScript** - Static type checking
@@ -256,7 +283,7 @@ docker run -p 3000:3000 messageflow
 This is a portfolio project, but contributions are welcome!
 
 1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`  
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
 3. Commit changes: `git commit -m 'Add amazing feature'`
 4. Push to branch: `git push origin feature/amazing-feature`
 5. Open a Pull Request
@@ -276,7 +303,7 @@ For questions about this project or collaboration opportunities:
 ## Acknowledgments
 
 - [Twilio](https://twilio.com) for messaging infrastructure
-- [Next.js](https://nextjs.org) for the React framework  
+- [Next.js](https://nextjs.org) for the React framework
 - [Tailwind CSS](https://tailwindcss.com) for styling
 - [Radix UI](https://radix-ui.com) for accessible components
 - [Prisma](https://prisma.io) for database management
