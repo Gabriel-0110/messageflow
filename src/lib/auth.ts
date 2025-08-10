@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import Credentials from 'next-auth/providers/credentials';
+import bcrypt from 'bcryptjs';
 import { prisma } from '@/lib/prisma';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
@@ -16,23 +17,28 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
+        const email = String(credentials.email).toLowerCase().trim();
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email as string },
-          select: { id: true, email: true, name: true, role: true }
+          where: { email },
+          select: { id: true, email: true, name: true, role: true, passwordHash: true }
         });
-        if (!user) return null;
-        // For now, skip password validation since password field doesn't exist in schema
-        // TODO: Add password field to User model in schema.prisma and run migration
-        return { 
-          id: user.id, 
-          email: user.email, 
-          name: user.name, 
-          role: user.role 
-        } as { id: string; email: string; name: string | null; role: 'admin' | 'user' };
+        if (!user?.passwordHash) return null;
+        const valid = await bcrypt.compare(String(credentials.password), user.passwordHash);
+        if (!valid) return null;
+        const role = user.role === 'admin' ? 'admin' : 'user';
+        return { id: user.id, email: user.email, name: user.name, role };
       }
     })
   ],
   callbacks: {
+    // Allow unauthenticated access to NextAuth endpoints and Twilio webhook in middleware
+    async authorized({ request, auth }) {
+      const { pathname } = request.nextUrl;
+      if (pathname.startsWith('/api/auth')) return true;
+      if (pathname.startsWith('/api/twilio/webhook')) return true;
+      // Protect everything else under matcher
+      return !!auth;
+    },
     async jwt({ token, user }) {
       type Token = typeof token & { id?: string; role?: 'admin' | 'user' };
       const t = token as Token;

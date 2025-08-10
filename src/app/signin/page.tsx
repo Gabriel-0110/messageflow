@@ -1,14 +1,19 @@
 import { redirect } from 'next/navigation';
-import { auth } from '@/lib/auth';
+import { auth, signIn } from '@/lib/auth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { getCsrfToken } from 'next-auth/react';
+// Using a server action instead of CSRF token for NextAuth v5
 
 export default async function SignInPage() {
   const session = await auth();
   if (session?.user) redirect('/dashboard');
-  const csrfToken = await getCsrfToken();
+  async function signInAction(formData: FormData) {
+    'use server';
+    const email = String(formData.get('email') ?? '');
+    const password = String(formData.get('password') ?? '');
+    await signIn('credentials', { email, password, redirectTo: '/dashboard' });
+  }
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-sm space-y-6">
@@ -16,8 +21,7 @@ export default async function SignInPage() {
           <h1 className="text-2xl font-semibold">Sign in</h1>
           <p className="text-sm text-muted-foreground">Use your email and password</p>
         </div>
-        <form action="/api/auth/callback/credentials" method="post" className="space-y-4">
-          <input type="hidden" name="csrfToken" value={csrfToken ?? undefined} />
+  <form action={signInAction} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input id="email" name="email" type="email" required autoComplete="email" />
