@@ -1,13 +1,14 @@
 import { redirect } from 'next/navigation';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { auth } from '@/lib/auth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { getCsrfToken } from 'next-auth/react';
 
 export default async function SignInPage() {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (session?.user) redirect('/dashboard');
+  const csrfToken = await getCsrfToken();
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-sm space-y-6">
@@ -16,6 +17,7 @@ export default async function SignInPage() {
           <p className="text-sm text-muted-foreground">Use your email and password</p>
         </div>
         <form action="/api/auth/callback/credentials" method="post" className="space-y-4">
+          <input type="hidden" name="csrfToken" value={csrfToken ?? undefined} />
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input id="email" name="email" type="email" required autoComplete="email" />

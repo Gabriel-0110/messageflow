@@ -1,12 +1,12 @@
+import NextAuth from 'next-auth';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import type { NextAuthOptions, Session } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
+import { prisma } from '@/lib/prisma';
 
-export const authOptions: NextAuthOptions = {
+export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
-  session: { strategy: 'database' },
+  session: { strategy: 'jwt' },
   pages: { signIn: '/signin' },
   providers: [
     Credentials({
@@ -29,17 +29,25 @@ export const authOptions: NextAuthOptions = {
     })
   ],
   callbacks: {
-    async session({ session, token, user }) {
-      if (session.user && user) {
-        (session.user as any).id = user.id;
-        (session.user as any).role = (user as any).role ?? 'user';
+    async jwt({ token, user }) {
+      type Token = typeof token & { id?: string; role?: 'admin' | 'user' };
+      const t = token as Token;
+      if (user) {
+        t.id = (user as { id?: string }).id;
+        t.role = ((user as { role?: 'admin' | 'user' }).role) ?? 'user';
+        t.name = user.name ?? t.name;
+        t.email = user.email ?? t.email;
+      }
+      return t;
+    },
+    async session({ session, token }) {
+      type Token = typeof token & { id?: string; role?: 'admin' | 'user' };
+      const t = token as Token;
+      if (session.user) {
+        (session.user as { id?: string; role?: 'admin' | 'user' }).id = t.id;
+        (session.user as { id?: string; role?: 'admin' | 'user' }).role = t.role ?? 'user';
       }
       return session;
-    }
+    },
   }
-};
-
-export async function assertSession(session: Session | null) {
-  if (!session?.user) throw new Error('Unauthorized');
-  return session;
-}
+});

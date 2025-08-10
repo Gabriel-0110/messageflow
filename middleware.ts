@@ -4,7 +4,7 @@ export { default } from 'next-auth/middleware';
 export const config = {
   matcher: [
     '/dashboard/:path*',
-    // Exclude /api/auth and /api/twilio/webhook using negative lookahead
-    '/api/(?!auth|twilio\\/webhook).*',
+  // Exclude /api/auth and /api/twilio/webhook using negative lookahead
+  '/api/(?!auth|twilio/webhook).*',
   ],
 };
