@@ -1,5 +1,5 @@
 {
-  "name": "twilio-messaging-app",
+  "name": "messageflow",
   "version": "0.1.0",
   "private": true,
   "scripts": {

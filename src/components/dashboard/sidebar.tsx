@@ -61,7 +61,7 @@ export function Sidebar() {
         <div className="flex items-center flex-shrink-0 px-4 pb-4">
           <Phone className="h-8 w-8 text-primary mr-2" />
           <span className="text-lg font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-            TwilioMessage
+            MessageFlow
           </span>
         </div>
         

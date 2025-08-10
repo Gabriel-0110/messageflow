@@ -10,7 +10,7 @@ export default function HomePage() {
           <div className="flex items-center justify-center mb-6">
             <MessageSquare className="h-12 w-12 text-primary mr-3" />
             <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-              TwilioMessage
+              MessageFlow
             </h1>
           </div>
           <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">

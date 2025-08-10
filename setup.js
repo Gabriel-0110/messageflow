@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-console.log('🚀 Setting up TwilioMessage App...\n');
+console.log('🚀 Setting up MessageFlow App...\n');
 
 // Check if .env.local exists
 const envPath = path.join(__dirname, '.env.local');
@@ -47,7 +47,7 @@ console.log('Next steps:');
 console.log('1. Update .env.local with your Twilio credentials');
 console.log('2. Run: npm run dev');
 console.log('3. Open: http://localhost:3000\n');
-console.log('📚 For help: https://github.com/your-repo/twilio-messaging-app\n');
+console.log('📚 For help: https://github.com/Gabriel-0110/messageflow\n');
 
 // Display Twilio setup instructions
 console.log('🔧 Twilio Setup Required:');

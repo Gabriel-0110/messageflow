@@ -25,7 +25,7 @@ export function Header() {
           </Button>
           <div className="flex items-center">
             <Phone className="h-6 w-6 text-primary mr-2" />
-            <span className="font-bold text-primary">TwilioMessage</span>
+            <span className="font-bold text-primary">MessageFlow</span>
           </div>
         </div>
 
