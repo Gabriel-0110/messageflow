@@ -2,6 +2,14 @@
   "name": "messageflow",
   "version": "0.1.0",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gabriel-0110/messageflow.git"
+  },
+  "homepage": "https://github.com/Gabriel-0110/messageflow#readme",
+  "bugs": {
+    "url": "https://github.com/Gabriel-0110/messageflow/issues"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
